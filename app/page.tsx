@@ -1,9 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
-import { HeroHighlight } from "@/components/ui/hero-highlight";
-import React from "react";
+import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
+import React, { useRef } from "react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { IconCode } from "@tabler/icons-react";
+import { IconCode, IconArrowDown } from "@tabler/icons-react";
 import { LampContainer } from "@/components/ui/lamp";
 
 const Skeleton = () => (
@@ -17,14 +17,19 @@ const items = [
     header: <Skeleton />,
     icon: <IconCode className="h-4 w-4 text-neutral-500" />,
     badge: "Coming Soon",
-  }
+  },
 ];
 
 export default function Home() {
+  const productsSectionRef = useRef<HTMLDivElement>(null);
+
+  const scrollToProducts = () => {
+    productsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="absolute inset-0 bg-black text-white min-h-screen">
-      {/* Hero Section */}
-      <HeroHighlight containerClassName="h-[100vh] bg-black"> {/* Increased height */}
+      <HeroHighlight containerClassName="h-[100vh] bg-black">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: [20, -5, 0] }}
@@ -52,14 +57,22 @@ export default function Home() {
             Coming Soon
           </span>
         </motion.p>
+
+        <motion.button
+          onClick={scrollToProducts}
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
+          className="mt-16 mx-auto flex items-center justify-center w-7 h-7 rounded-full border-2 border-white text-white shadow-lg cursor-pointer"
+          aria-label="Scroll Down"
+        >
+          <IconArrowDown className="h-5 w-5 text-white justify-center" />
+        </motion.button>
       </HeroHighlight>
 
-      {/* Navigation */}
       <nav className="absolute top-0 left-0 w-full flex items-center justify-between px-8 py-4 bg-transparent z-10">
         <div className="text-lg sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-200 via-cyan-300 to-sky-600">
           Operion
         </div>
-
         <div className="hidden sm:flex space-x-8 text-white text-lg">
           <a
             href="/"
@@ -70,10 +83,12 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Products Section */}
-      <div className="bg-black flex flex-col items-center">
+      <div
+        ref={productsSectionRef}
+        className="bg-black flex flex-col items-center justify-center min-h-screen"
+      >
         <LampContainer>
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0.5, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{
@@ -81,11 +96,16 @@ export default function Home() {
               duration: 0.8,
               ease: "easeInOut",
             }}
+            className="flex flex-col items-center justify-center"
           >
-            <span className="underline bg-gradient-to-r from-slate-200 via-slate-300 to-slate-400 text-transparent bg-clip-text font-bold text-4xl mb-8 pt-10">
-              Products
-            </span>
-            <BentoGrid className="max-w-4xl mx-auto">
+            <div className="text-center mb-4">
+              <Highlight className="text-black dark:text-white">
+                <span className="bg-gradient-to-r from-slate-100 via-slate-200 to-slate-300 text-transparent bg-clip-text font-bold text-4xl">
+                  Products
+                </span>
+              </Highlight>
+            </div>
+            <BentoGrid className="max-w-4xl mx-auto mt-5">
               {items.map((item, i) => (
                 <BentoGridItem
                   key={i}
@@ -98,27 +118,10 @@ export default function Home() {
                 />
               ))}
             </BentoGrid>
-          </motion.h1>
+          </motion.div>
         </LampContainer>
-        <span className="underline bg-gradient-to-r from-slate-200 via-slate-300 to-slate-400 text-transparent bg-clip-text font-bold text-4xl mb-8 pt-10">
-          Products
-        </span>
-        <BentoGrid className="max-w-4xl mx-auto">
-          {items.map((item, i) => (
-            <BentoGridItem
-              key={i}
-              title={item.title}
-              description={item.description}
-              header={item.header}
-              icon={item.icon}
-              badge={item.badge}
-              className={i === 3 || i === 6 ? "md:col-span-2" : ""}
-            />
-          ))}
-        </BentoGrid>
       </div>
-      
-      {/* Footer */}
+
       <footer className="mt-auto py-4 text-center bg-black">
         <span className="text-gray-400 text-sm">© 2024 Operion</span>
       </footer>
