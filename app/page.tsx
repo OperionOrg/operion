@@ -5,6 +5,7 @@ import React, { useRef } from "react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { IconCode, IconArrowDown } from "@tabler/icons-react";
 import { LampContainer } from "@/components/ui/lamp";
+import Link from 'next/link'
 
 const Skeleton = () => (
   <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
@@ -74,12 +75,12 @@ export default function Home() {
           Operion
         </div>
         <div className="hidden sm:flex space-x-8 text-white text-lg">
-          <a
+          <Link
             href="/"
             className="hover:text-blue-600 transition-colors duration-600 ease-in-out"
           >
             Home
-          </a>
+          </Link>
         </div>
       </nav>
 
